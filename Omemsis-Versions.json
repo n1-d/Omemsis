@@ -1,0 +1,11 @@
+{
+    "FileList": [{
+        "filename": "Omemsis.exe",
+        "version": "1.0.1.48",
+        "url": "https://github.com/no1dead/Omemsis/releases"
+    }, {
+        "filename": "Omemsis-Patches.json",
+        "version": "3",
+        "url": "https://raw.githubusercontent.com/no1dead/Omemsis/master/Omemsis-Patches.json"
+    }]
+}
