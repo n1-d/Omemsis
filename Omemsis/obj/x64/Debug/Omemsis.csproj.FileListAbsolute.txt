@@ -1,0 +1,14 @@
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Debug\DarkLoader.exe.config
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Debug\DarkLoader.exe
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Debug\DarkLoader.pdb
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Debug\Newtonsoft.Json.dll
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Debug\Newtonsoft.Json.xml
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\Omemsis.Forms.HexHelper.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\Omemsis.MainForm.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\Omemsis.MemoryView.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\Omemsis.PatchEditor.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\Omemsis.Forms.Splash.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\DarkLoader.Properties.Resources.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\Omemsis.csproj.GenerateResource.Cache
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\DarkLoader.exe
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\DarkLoader.pdb
