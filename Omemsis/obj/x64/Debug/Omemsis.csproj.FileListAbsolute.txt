@@ -13,3 +13,4 @@ C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\Omemsis.csproj.Generate
 C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\DarkLoader.exe
 C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\DarkLoader.pdb
 C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Debug\Omemsis.csprojResolveAssemblyReference.cache
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Debug\Omemsis.exe.config
