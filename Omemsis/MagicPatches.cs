@@ -118,12 +118,46 @@ namespace Omemsis
             }
         }
 
+        private static IntPtr GetModuleBaseAddress(string AppName, string ModuleName)
+        {
+            IntPtr BaseAddress = IntPtr.Zero;
+            Process[] myProcess = null;
+            ProcessModule myProcessModule = null;
+
+            myProcess = Process.GetProcessesByName(AppName);
+
+            if (myProcess.Length > 0)
+            {
+                ProcessModuleCollection myProcessModuleCollection;
+
+                try
+                {
+                    myProcessModuleCollection = myProcess[0].Modules;
+                }
+                catch { return IntPtr.Zero; /*Maybe would be ok show the exception after/instead return*/ }
+
+                for (int i = 0; i < myProcessModuleCollection.Count; i++)
+                {
+                    myProcessModule = myProcessModuleCollection[i];
+                    if (myProcessModule.ModuleName.Contains(ModuleName))
+                    {
+                        BaseAddress = myProcessModule.BaseAddress;
+                        break;
+                    }
+                }
+            }
+
+            return BaseAddress;
+        }
+
         //This returns an IntPtr of the address found from a byte pattern match.
         public static IntPtr ScanForPattern(Process p, byte[] pattern, string match, int offset, IntPtr startOffset = new IntPtr())
         {
-            if (startOffset.ToInt32() == 0)
+            
+            if (startOffset.ToInt64() == 0)
             {
-                startOffset = p.MainModule.BaseAddress;
+                string suckfuckingdongdickcode = "Halo5Forge.exe";
+                startOffset = GetModuleBaseAddress("Halo5Forge", suckfuckingdongdickcode);
             }
             try
             {
@@ -203,7 +237,7 @@ namespace Omemsis
             else
             {
                 bool patched = false;
-                while (PatchReturnAddress.ToInt32() > 0 && PatchLoopRun)
+                while (PatchReturnAddress.ToInt64() > 0 && PatchLoopRun)
                 {
                     Memory.WriteProtectedMemory(p, PatchReturnAddress, patchBytes, patchBytes.Length);
                     LogFile.WriteToLog("Recursive Memory Patch (" + patch.title + ") found and patched at " + PatchReturnAddress.ToString("X"));
@@ -225,7 +259,7 @@ namespace Omemsis
 
             PatchReturnAddress = MagicPatches.ScanForPattern(MainForm.HaloOnline, patternBytes, patch.match, patch.offset);
 
-            if (PatchReturnAddress == null || PatchReturnAddress.ToInt32() <= 0)
+            if (PatchReturnAddress == null || PatchReturnAddress.ToInt64() <= 0)
             {
                 return false;
             }

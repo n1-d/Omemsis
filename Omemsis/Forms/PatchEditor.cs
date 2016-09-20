@@ -65,7 +65,7 @@ namespace Omemsis
             int offset = Convert.ToInt32(txtPatternOffset.Text);
             PatchReturnAddress = MagicPatches.ScanForPattern(MainForm.HaloOnline, searchBytePattern, match, offset);
 
-            if (PatchReturnAddress == null || PatchReturnAddress.ToInt32() <= 0)
+            if (PatchReturnAddress == null || PatchReturnAddress.ToInt64() <= 0)
             {
                 
                 MessageBox.Show("No results, bad patch?");
@@ -73,7 +73,7 @@ namespace Omemsis
             else
             {
                 
-                while (PatchReturnAddress.ToInt32() > 0)
+                while (PatchReturnAddress.ToInt64() > 0)
                 {
                     this.Invoke((MethodInvoker)delegate()
                     {
@@ -97,7 +97,7 @@ namespace Omemsis
             if (listPatternResults.SelectedItems.Count > 0)
             {
                 string item = listPatternResults.SelectedItems[0].ToString();
-                CurrentPatchAddress = (IntPtr)Convert.ToInt32(item, 16);
+                CurrentPatchAddress = (IntPtr)Convert.ToInt64(item, 16);
                 
             }
             if (!MemoryView.FormShowing)
@@ -306,7 +306,7 @@ namespace Omemsis
                        if (listPatternResults.SelectedItems.Count > 0)
                        {
                            string item = listPatternResults.SelectedItems[0].ToString();
-                           CurrentPatchAddress = (IntPtr)Convert.ToInt32(item, 16);
+                           CurrentPatchAddress = (IntPtr)Convert.ToInt64(item, 16);
                            MagicPatches.PatchSingleAddress(tmpPatch, CurrentPatchAddress);
                        }
                        else
