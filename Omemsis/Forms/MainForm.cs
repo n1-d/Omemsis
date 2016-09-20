@@ -29,7 +29,7 @@ namespace Omemsis
        
         bool forceLoading = false;
 
-        string HaloOnlineEXE = "eldorado";
+        string HaloOnlineEXE = "halo5forge";
 
         public MainForm()
         {
@@ -45,51 +45,13 @@ namespace Omemsis
             loadPatches.Start();
             WeRunningYup = true;
 
-            //Set Default Game Mode combo boxes to 
-            comboGameModes.SelectedIndex = 2;
-            comboGameTypes.SelectedIndex = 0;
-
-            //Are we running the new halo_online.exe build? If so, set the exe name accordingly.
-            if (File.Exists(Application.StartupPath + @"\halo_online.exe"))
-            {
-                HaloOnlineEXE = "halo_online";
-            }
-
-            //Let's load the maps up and pull out their info
-            string HaloMapDir = Application.StartupPath + @"\maps\";
-            DirectoryInfo d = new DirectoryInfo(HaloMapDir);
-
-            foreach (var file in d.GetFiles("*.map"))
-            {
-                byte[] MapHeader = new byte[756];
-                byte[] BuildVersion = new byte[32]; //0.4.1.327043 cert_MS26_new
-                byte[] MapName = new byte[36];
-                byte[] MapTagDir = new byte[256];
-                using (BinaryReader reader = new BinaryReader(new FileStream(HaloMapDir + file.Name, FileMode.Open, FileAccess.Read)))
-                {
-                    reader.BaseStream.Seek(0, SeekOrigin.Begin);
-                    reader.Read(MapHeader, 0, 756);
-
-                    int MapTagDirOffset = HelperFunctions.SearchBytes(MapHeader, Encoding.ASCII.GetBytes("level"));
-
-                    reader.BaseStream.Seek(284, SeekOrigin.Begin);
-                    reader.Read(BuildVersion, 0, 32);
-                    reader.BaseStream.Seek(MapTagDirOffset - 36, SeekOrigin.Begin);
-                    reader.Read(MapName, 0, 36);
-                    reader.BaseStream.Seek(MapTagDirOffset, SeekOrigin.Begin);
-                    reader.Read(MapTagDir, 0, 256);
-                }
-                listMapNames.Items.Add(System.Text.Encoding.UTF8.GetString(MapName).Replace("\0", ""));
-                listMapInfo.Items.Add(System.Text.Encoding.UTF8.GetString(BuildVersion).Replace("\0", "") + " " + System.Text.Encoding.UTF8.GetString(MapTagDir).Replace("\0", ""));
-            }
+       
 
             //Let's keep an eye out for Halo starting and stopping.
             Thread haloWatcher = new Thread(IsHaloRunning);
             haloWatcher.Start();
 
             //Let's keep an eye out for frost so we can kill it and hijack the session tokens
-            Thread frostWatcher = new Thread(FrostWatcher);
-            frostWatcher.Start();
 
             //Let's make sure people are running the greatest latest turd available
             if (!Program.IsDebug)
@@ -99,87 +61,8 @@ namespace Omemsis
             }
         }
         bool inLauncherLoop = false;
-        private void FrostWatcher()
-        {
-            string FrostLogFile = Application.StartupPath + "/Frost/launcherUpdater.log";
-            if (File.Exists(FrostLogFile))
-            {
-                File.Delete(FrostLogFile);
-            }
-            while (WeRunningYup)
-            {
-                try
-                {
-                    bool LaunchRequest = false;
-                    if (File.Exists(FrostLogFile))
-                    {
-                        var forstProcessess = Process.GetProcesses().Where(pr => pr.ProcessName.Contains("frost"));
 
-                        foreach (var process in forstProcessess)
-                        {
-                            process.WaitForExit();
-                        }
-                        string FrostLog = File.ReadAllText(FrostLogFile);
-                        File.Delete(FrostLogFile + "-DarkBackup.log");
-                        File.Move(FrostLogFile, FrostLogFile + "-DarkBackup.log");
 
-                        if (FrostLog != "")
-                        {
-                            string launchOptions = FrostLog.Split(new[] { '\r', '\n' }).FirstOrDefault().Split(new[] { "halo_online.exe" }, StringSplitOptions.None)[1];
-                            this.Invoke(new MethodInvoker(delegate
-                            {
-                                txt4gameArguments.Text = launchOptions;
-                            }));
-                            LaunchRequest = true;
-                        }
-                    }
-                    if (LaunchRequest)
-                    {
-                        this.Invoke(new MethodInvoker(delegate
-                              {
-                                  splash = new Forms.Splash();
-                                  splash.Show();
-                              }));
-                        inLauncherLoop = true;
-                        Thread launcherLoop = new Thread(KillFrostLauncherLoop);
-                        launcherLoop.Start();
-                        LaunchHaloOnline();
-                        inLauncherLoop = false;
-                    }
-                }
-                catch (Exception e)
-                {
-                    
-                }
-            }
-        }
-        private void KillFrostLauncherLoop()
-        {
-            while (inLauncherLoop)
-            {
-                try
-                {
-                    var haloProcesses = Process.GetProcesses().Where(pr => pr.ProcessName.Contains("halo"));
-
-                    foreach (var process in haloProcesses)
-                    {
-                        process.Kill();
-                    }
-
-                    haloProcesses = Process.GetProcesses().Where(pr => pr.ProcessName.Contains("Halo"));
-
-                    foreach (var process in haloProcesses)
-                    {
-                        process.Kill();
-                    }
-                }
-                catch (Exception)
-                {
-
-                }
-                Thread.Sleep(10);
-            }
-        }
         private void CheckForUpdates()
         {
             
@@ -231,15 +114,11 @@ namespace Omemsis
                 {
                     if (!HaloOnline.HasExited)
                     {
-                        if (!forceLoading)
-                        {
-                            this.btnDarkLoad.Invoke(new MethodInvoker(delegate { btnDarkLoad.Enabled = true; groupTools.Enabled = true; }));
-                        }
                         HaloIsRunning = true;
                     }
                     else
                     {
-                        this.btnDarkLoad.Invoke(new MethodInvoker(delegate { btnDarkLoad.Enabled = false; groupTools.Enabled = false; }));
+                        
                         HaloIsRunning = false;
                         HaloOnline = null;
                         pAddr = new IntPtr(0);
@@ -269,15 +148,6 @@ namespace Omemsis
         private void btnDarkLoad_Click(object sender, EventArgs e)
         {
             
-            if (listMapNames.SelectedIndex == -1)
-            {
-                MessageBox.Show("Please select a map to load on the side list.", "Omemsis");
-                return;
-            }
-            forceLoading = true;
-            btnDarkLoad.Text = "Scanning";
-            btnDarkLoad.Enabled = false;
-
             Thread forceLoadMap = new Thread(ForceLoadMap);
             forceLoadMap.Start();
         }
@@ -344,7 +214,7 @@ namespace Omemsis
                     return;
 
                 }
-                this.btnDarkLoad.Invoke(new MethodInvoker(delegate { btnDarkLoad.Text = "Patching"; }));
+                
                 byte[] nop = { 0x90, 0x90, 0x90, 0x90, 0x90 };
                 Memory.WriteProcessMemory(p, PtrMpPatch, nop, 5, out lpNumberOfBytesWritten);
 
@@ -357,12 +227,6 @@ namespace Omemsis
                 byte[] mapTime = { 0x0 };
                 // Grab map name from selected listbox
                 byte[] mapName = new byte[36];
-                this.comboGameModes.Invoke(new MethodInvoker(delegate
-                {
-                    BitConverter.GetBytes(Convert.ToInt32(comboGameModes.SelectedIndex)).CopyTo(mapType, 0);
-                    BitConverter.GetBytes(Convert.ToInt32(comboGameTypes.SelectedIndex)).CopyTo(gameType, 0);
-                    Encoding.ASCII.GetBytes(listMapNames.SelectedItem.ToString()).CopyTo(mapName, 0);
-                }));
                 Memory.WriteProcessMemory(p, PtrGameType, gameType, 4, out lpNumberOfBytesWritten);
                 Memory.WriteProcessMemory(p, PtrMapType, mapType, 4, out lpNumberOfBytesWritten);
                 Memory.WriteProcessMemory(p, PtrMapName, mapName, mapName.Length, out lpNumberOfBytesWritten);
@@ -374,11 +238,7 @@ namespace Omemsis
                 
                 MessageBox.Show("Something went wrong...\n" + ex.Message, "Omemsis Error");
             }
-            this.btnDarkLoad.Invoke(new MethodInvoker(delegate
-            {
-                btnDarkLoad.Text = "DarkLoad";
-                btnDarkLoad.Enabled = true;
-            }));
+
             forceLoading = false;
         }
 
@@ -390,8 +250,7 @@ namespace Omemsis
         Forms.Splash splash;
         private void btnLaunchHaloOnline_Click(object sender, EventArgs e)
         {
-            btnLaunchHaloOnline.Enabled = false;
-            btnLaunchHaloOnline.Text = "Launching...";
+
             
             splash = new Forms.Splash();
             splash.Show();
@@ -432,7 +291,7 @@ namespace Omemsis
                     HaloOnline = new System.Diagnostics.Process();
                     HaloOnline.StartInfo.FileName = tmpExe;
                     HaloOnline.StartInfo.WorkingDirectory = Application.StartupPath;
-                    HaloOnline.StartInfo.Arguments = txtHaloLaunchArguments.Text + " " + txt4gameArguments.Text + " -launcher";
+                   
 
                     HaloOnline.Start();
 
@@ -464,11 +323,6 @@ namespace Omemsis
                 
                 MessageBox.Show("Halo Online is already running!", "Omemsis uh...");
             }
-            this.Invoke(new MethodInvoker(delegate
-                       {
-                           btnLaunchHaloOnline.Enabled = true;
-                           btnLaunchHaloOnline.Text = "Launch Halo Online";
-                       }));
 
         }
 
@@ -527,22 +381,31 @@ namespace Omemsis
 
         private void comboGameTypes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboGameTypes.SelectedIndex > 0)
-            {
-                
-            }
+
         }
 
         private void comboGameModes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboGameModes.SelectedIndex > 0)
-            {
-                
-            }
+
         }
 
         private void txtHaloLaunchArguments_TextChanged(object sender, EventArgs e)
         {
+        }
+
+        private void listMapInfo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
