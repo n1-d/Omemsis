@@ -1,7 +1,7 @@
 version: 1.0.1.{build}
 
 # clone directory
-clone_folder: c:\projects\darkloader
+clone_folder: c:\projects\omemsis
 
 configuration: Release
 platform: Any CPU
@@ -14,15 +14,15 @@ assembly_info:
   assembly_informational_version: '{version}'
 
 build:
-  project: DarkLoader.sln
+  project: Omemsis.sln
   verbosity: normal
 
 # scripts to run after build
 before_build:
   - nuget restore
 after_build:
-  - cd c:\projects\darkloader
-  - copy c:\projects\darkloader\DarkLoader\bin\Release\DarkLoader.exe c:\projects\darkloader\DarkLoader.exe
+  - cd c:\projects\Omemsis
+  - copy c:\projects\Omemsis\Omemsis\bin\Release\Omemsis.exe c:\projects\Omemsis\Omemsis.exe
 artifacts:
-  - path: DarkLoader.exe
-    name: DarkLoader.exe
+  - path: Omemsis.exe
+    name: Omemsis.exe
