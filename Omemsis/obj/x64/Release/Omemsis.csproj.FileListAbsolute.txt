@@ -1,0 +1,14 @@
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Release\Omemsis.exe.config
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Release\Omemsis.exe
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Release\Omemsis.pdb
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Release\Newtonsoft.Json.dll
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\bin\x64\Release\Newtonsoft.Json.xml
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.Forms.HexHelper.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.MainForm.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.MemoryView.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.PatchEditor.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.Forms.Splash.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.Properties.Resources.resources
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.csproj.GenerateResource.Cache
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.exe
+C:\Users\Sure\Source\Repos\Omemsis\Omemsis\obj\x64\Release\Omemsis.pdb

@@ -1,13 +1,13 @@
 {
   "PatchList": [
     {
-      "title": "Hud Hide",
-      "author": "DARKC0DE",
+      "title": "Blank Patch",
+      "author": "no1dead",
       "description": "This patch will allow you to hide the HUD",
-      "pattern": "F0 3F D9 5D 93 A8 E2 DD 83 3F 00",
+      "pattern": "XX XX XX XX XX XX XX XX XX XX XX",
       "match": "xxxxxxxxxxx",
       "offset": 6,
-      "patch": "C3 F5 48 40",
+      "patch": "XX XX XX XX",
       "recursivePatch": true,
       "patchOnStartup": false,
       "patchBeforeStartup": false

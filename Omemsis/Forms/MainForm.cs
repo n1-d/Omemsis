@@ -19,7 +19,7 @@ namespace Omemsis
     public partial class MainForm : Form
     {
         public static Process HaloOnline;
-        public static bool HaloIsRunning = false;
+        public static bool HaloIsRunning = true;
 
         //Lets keep the previous scan in memory so only the first scan is slow.
         IntPtr pAddr;
@@ -260,70 +260,6 @@ namespace Omemsis
 
         private void LaunchHaloOnline()
         {
-            var darkLoadedProcesses = Process.GetProcesses().Where(pr => pr.ProcessName.Contains("darkloaded"));
-
-            foreach (var process in darkLoadedProcesses)
-            {
-                process.Kill();
-                process.WaitForExit();
-            }
-            if (!HaloIsRunning)
-            {
-                try
-                {
-                    byte[] HaloExeBytes = File.ReadAllBytes(Application.StartupPath + @"\" + HaloOnlineEXE + ".exe");
-
-                    string tmpExe = Path.Combine(Application.StartupPath, "darkloaded.exe");
-                    string gameShield = Path.Combine(Application.StartupPath, "gameShieldDll.dll");
-
-                    MagicPatches.ExePatches(HaloExeBytes);
-
-                    File.WriteAllBytes(tmpExe, HaloExeBytes);
-                    Thread.Sleep(100);
-                    if (File.Exists(gameShield))
-                    {
-                        if (File.Exists(gameShield + ".nope"))
-                        {
-                            File.Delete(gameShield + ".nope");
-                        }
-                        File.Move(gameShield, gameShield + ".nope");
-                    }
-                    HaloOnline = new System.Diagnostics.Process();
-                    HaloOnline.StartInfo.FileName = tmpExe;
-                    HaloOnline.StartInfo.WorkingDirectory = Application.StartupPath;
-                   
-
-                    HaloOnline.Start();
-
-                    Thread.Sleep(3000);
-                    Memory.SuspendProcess(HaloOnline.Id);
-                    MagicPatches.RunStartupPatches();
-                    Memory.ResumeProcess(HaloOnline.Id);
-                    this.Invoke(new MethodInvoker(delegate
-                    {
-                        splash.Hide();
-                    }));
-                }
-                catch (Exception e)
-                {
-                    this.Invoke(new MethodInvoker(delegate
-                      {
-                          splash.Hide();
-                      }));
-                    
-                    MessageBox.Show("Failed to start Halo Online!\n\n" + e.Message, "Something bad happened.");
-                }
-            }
-            else
-            {
-                this.Invoke(new MethodInvoker(delegate
-                {
-                    splash.Hide();
-                }));
-                
-                MessageBox.Show("Halo Online is already running!", "Omemsis uh...");
-            }
-
         }
 
         private void btnIssues_Click(object sender, EventArgs e)
